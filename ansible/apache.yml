@@ -1,0 +1,31 @@
+- hosts: aegae
+  vars_files:
+    - vars/main.yml
+  vars:
+    ansible_ssh_private_key_file: ./terraform/private_key
+    ansible_host_key_checking: false
+    aegae_sources_path: ../e2_distr_v4134.tar.gz
+    server_dest_path: /var/www/html/
+  roles:
+    - { role: geerlingguy.apache }
+    - { role: geerlingguy.php }
+    - { role: geerlingguy.mysql }
+
+  tasks:
+    - name: Install tar.
+      yum:
+        name: [tar]
+        state: present
+    - name: Copy files to the remote server.
+      unarchive:
+        src: "{{ aegae_sources_path }}"
+        dest: "{{ server_dest_path }}"
+        creates: "{{ server_dest_path }}/index.php"
+        extra_opts: [--strip-components=1]
+    - name: Set permissions for the files.
+      file:
+        dest: "{{ server_dest_path }}"
+        owner: apache
+        group: apache
+        mode: u=rwX,g=rX,o=rX
+        recurse: yes

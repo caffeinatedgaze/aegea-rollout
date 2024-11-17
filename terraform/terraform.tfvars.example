@@ -1,0 +1,6 @@
+hcloud_token  = "[redacted]P6bEQ0U0X5afptrpU5DrFL9o2pjYJCRJDyFZgfxg33TWuKaw"
+image         = "rocky-9"
+server_type   = "cpx11"
+location      = "nbg1"
+ssh_key_id    = "user@MacBook-Pro.local"
+playbook_path = "../ansible/apache.yml"
